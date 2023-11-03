@@ -1,7 +1,5 @@
 <!doctype html>
 <html lang="en-us">
-  <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp" />
-  <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin" />
   <script>
     function download_str(str, filename) {
     var blob = new Blob([str], {type: 'text/plain'});
@@ -14,9 +12,12 @@
 }
   </script>
   <head>
+    <link rel="icon" href="favicon.png">
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Emscripten-Generated Code</title>
+    <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp" />
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin" />
+    <title>Kurumi ~ Modular Wavetable Workstation</title>
     <style>
       .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
       textarea.emscripten { font-family: monospace; width: 80%; }
