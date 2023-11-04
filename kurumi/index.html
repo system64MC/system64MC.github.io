@@ -10,6 +10,21 @@
     a.click();
     URL.revokeObjectURL(url);
 }
+
+    var vamps = [
+      "Flandre Scarlet",
+      "Remilia Scarlet",
+      "Kurumi",
+      "Alucard",
+      "Krul Tepes",
+      "Dracula",
+      "Mikaela Hyakuya"
+      ];
+
+    function select_vamp() {
+      let val = Math.floor((Math.random() * vamps.length));
+      return vamps[val]
+    }
   </script>
   <head>
     <link rel="icon" href="favicon.png">
@@ -21,7 +36,7 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Kurumi-X ~ Modular Wavetable Workstation">
     <meta property="og:site_name" content="Kurumi-X ~ Modular Wavetable Workstation">
-    <meta property="og:description" content="🧛 The Wavetable Workstation as powerful as Vampires 🧛">
+    <meta property="og:description" content="🧛 The Wavetable Workstation as powerful as " + select_vamp() + " 🧛">
     <meta property="og:image" content="https://system64mc.github.io/kurumi/favicon.jpeg">
     <meta name="twitter:card" content="summary_large_image">
     <meta property="og:footer" content="🧛🦇">
