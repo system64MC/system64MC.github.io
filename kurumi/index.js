@@ -1220,11 +1220,11 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  218996: ($0) => { navigator.clipboard.writeText(UTF8ToString($0)); },  
- 219047: ($0, $1, $2) => { const a = document.createElement('a'); a.style = 'display:none'; document.body.appendChild(a); var result = new Uint8Array($1); for(var i = 0; i < $1; i++) { result[i] = Module._getByte($0 + i); } var blob = new Blob([result], { type: 'application/octet-stream' }); const url = URL.createObjectURL(blob); a.href = url; const filename = UTF8ToString($2); a.download = filename; a.click(); URL.revokeObjectURL(url); document.body.removeChild(a); },  
- 219495: ($0) => { window.open(UTF8ToString($0)); },  
- 219528: ($0) => { alert(UTF8ToString($0)); },  
- 219555: ($0) => { document.title = UTF8ToString($0) }
+  219556: ($0) => { navigator.clipboard.writeText(UTF8ToString($0)); },  
+ 219607: ($0, $1, $2) => { const a = document.createElement('a'); a.style = 'display:none'; document.body.appendChild(a); var result = new Uint8Array($1); for(var i = 0; i < $1; i++) { result[i] = Module._getByte($0 + i); } var blob = new Blob([result], { type: 'application/octet-stream' }); const url = URL.createObjectURL(blob); a.href = url; const filename = UTF8ToString($2); a.download = filename; a.click(); URL.revokeObjectURL(url); document.body.removeChild(a); },  
+ 220055: ($0) => { window.open(UTF8ToString($0)); },  
+ 220088: ($0) => { alert(UTF8ToString($0)); },  
+ 220115: ($0) => { document.title = UTF8ToString($0) }
 };
 
 
@@ -7425,6 +7425,9 @@ var _saveFUW = Module["_saveFUW"] = createExportWrapper("saveFUW");
 
 /** @type {function(...*):?} */
 var _openTab = Module["_openTab"] = createExportWrapper("openTab");
+
+/** @type {function(...*):?} */
+var _saveGenerator = Module["_saveGenerator"] = createExportWrapper("saveGenerator");
 
 /** @type {function(...*):?} */
 var _alertJs = Module["_alertJs"] = createExportWrapper("alertJs");
