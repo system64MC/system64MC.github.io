@@ -1220,11 +1220,11 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  222484: ($0) => { navigator.clipboard.writeText(UTF8ToString($0)); },  
- 222535: ($0, $1, $2) => { const a = document.createElement('a'); a.style = 'display:none'; document.body.appendChild(a); var result = new Uint8Array($1); for(var i = 0; i < $1; i++) { result[i] = Module._getByte($0 + i); } var blob = new Blob([result], { type: 'application/octet-stream' }); const url = URL.createObjectURL(blob); a.href = url; const filename = UTF8ToString($2); a.download = filename; a.click(); URL.revokeObjectURL(url); document.body.removeChild(a); },  
- 222983: ($0) => { window.open(UTF8ToString($0)); },  
- 223016: ($0) => { alert(UTF8ToString($0)); },  
- 223043: ($0) => { document.title = UTF8ToString($0) }
+  227300: ($0) => { navigator.clipboard.writeText(UTF8ToString($0)); },  
+ 227351: ($0, $1, $2) => { const a = document.createElement('a'); a.style = 'display:none'; document.body.appendChild(a); var result = new Uint8Array($1); for(var i = 0; i < $1; i++) { result[i] = Module._getByte($0 + i); } var blob = new Blob([result], { type: 'application/octet-stream' }); const url = URL.createObjectURL(blob); a.href = url; const filename = UTF8ToString($2); a.download = filename; a.click(); URL.revokeObjectURL(url); document.body.removeChild(a); },  
+ 227799: ($0) => { window.open(UTF8ToString($0)); },  
+ 227832: ($0) => { alert(UTF8ToString($0)); },  
+ 227859: ($0) => { document.title = UTF8ToString($0) }
 };
 
 
@@ -7657,6 +7657,7 @@ var asmLibraryArg = {
   "glfwWindowShouldClose": _glfwWindowShouldClose,
   "invoke_ddd": invoke_ddd,
   "invoke_di": invoke_di,
+  "invoke_did": invoke_did,
   "invoke_didi": invoke_didi,
   "invoke_didii": invoke_didii,
   "invoke_didiii": invoke_didiii,
@@ -7692,6 +7693,7 @@ var asmLibraryArg = {
   "invoke_viiiiif": invoke_viiiiif,
   "invoke_viiiiii": invoke_viiiiii,
   "invoke_viiiiiifi": invoke_viiiiiifi,
+  "invoke_vjjj": invoke_vjjj,
   "llvm_eh_typeid_for": _llvm_eh_typeid_for
 };
 var asm = createWasm();
@@ -7733,6 +7735,9 @@ var _saveGenerator = Module["_saveGenerator"] = createExportWrapper("saveGenerat
 
 /** @type {function(...*):?} */
 var _saveAnalogGenerator = Module["_saveAnalogGenerator"] = createExportWrapper("saveAnalogGenerator");
+
+/** @type {function(...*):?} */
+var _saveFMX = Module["_saveFMX"] = createExportWrapper("saveFMX");
 
 /** @type {function(...*):?} */
 var _alertJs = Module["_alertJs"] = createExportWrapper("alertJs");
@@ -7791,6 +7796,9 @@ var ___cxa_can_catch = Module["___cxa_can_catch"] = createExportWrapper("__cxa_c
 
 /** @type {function(...*):?} */
 var ___cxa_is_pointer_type = Module["___cxa_is_pointer_type"] = createExportWrapper("__cxa_is_pointer_type");
+
+/** @type {function(...*):?} */
+var dynCall_vjjj = Module["dynCall_vjjj"] = createExportWrapper("dynCall_vjjj");
 
 /** @type {function(...*):?} */
 var dynCall_jiji = Module["dynCall_jiji"] = createExportWrapper("dynCall_jiji");
@@ -8071,6 +8079,17 @@ function invoke_vidd(index,a1,a2,a3) {
   }
 }
 
+function invoke_did(index,a1,a2) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
 function invoke_di(index,a1) {
   var sp = stackSave();
   try {
@@ -8137,17 +8156,6 @@ function invoke_iiiiiii(index,a1,a2,a3,a4,a5,a6) {
   }
 }
 
-function invoke_viiiif(index,a1,a2,a3,a4,a5) {
-  var sp = stackSave();
-  try {
-    getWasmTableEntry(index)(a1,a2,a3,a4,a5);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0) throw e;
-    _setThrew(1, 0);
-  }
-}
-
 function invoke_didi(index,a1,a2,a3) {
   var sp = stackSave();
   try {
@@ -8192,10 +8200,32 @@ function invoke_iiiiiiii(index,a1,a2,a3,a4,a5,a6,a7) {
   }
 }
 
+function invoke_viiiif(index,a1,a2,a3,a4,a5) {
+  var sp = stackSave();
+  try {
+    getWasmTableEntry(index)(a1,a2,a3,a4,a5);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
 function invoke_didii(index,a1,a2,a3,a4) {
   var sp = stackSave();
   try {
     return getWasmTableEntry(index)(a1,a2,a3,a4);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_vjjj(index,a1,a2,a3,a4,a5,a6) {
+  var sp = stackSave();
+  try {
+    dynCall_vjjj(index,a1,a2,a3,a4,a5,a6);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0) throw e;
