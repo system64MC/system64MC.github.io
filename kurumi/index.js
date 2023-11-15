@@ -1220,11 +1220,12 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  227300: ($0) => { navigator.clipboard.writeText(UTF8ToString($0)); },  
- 227351: ($0, $1, $2) => { const a = document.createElement('a'); a.style = 'display:none'; document.body.appendChild(a); var result = new Uint8Array($1); for(var i = 0; i < $1; i++) { result[i] = Module._getByte($0 + i); } var blob = new Blob([result], { type: 'application/octet-stream' }); const url = URL.createObjectURL(blob); a.href = url; const filename = UTF8ToString($2); a.download = filename; a.click(); URL.revokeObjectURL(url); document.body.removeChild(a); },  
- 227799: ($0) => { window.open(UTF8ToString($0)); },  
- 227832: ($0) => { alert(UTF8ToString($0)); },  
- 227859: ($0) => { document.title = UTF8ToString($0) }
+  585140: ($0) => { navigator.clipboard.writeText(UTF8ToString($0)); },  
+ 585191: ($0, $1, $2) => { const a = document.createElement('a'); a.style = 'display:none'; document.body.appendChild(a); var result = new Uint8Array($1); for(var i = 0; i < $1; i++) { result[i] = Module._getByte($0 + i); } var blob = new Blob([result], { type: 'application/octet-stream' }); const url = URL.createObjectURL(blob); a.href = url; const filename = UTF8ToString($2); a.download = filename; a.click(); URL.revokeObjectURL(url); document.body.removeChild(a); },  
+ 585639: ($0) => { window.open(UTF8ToString($0)); },  
+ 585672: ($0) => { alert(UTF8ToString($0)); },  
+ 585699: () => { function uploadFile(file) { var reader = new FileReader(); reader.addEventListener("load", _=> { var data = reader.result; try { var obj = JSON.parse(data); if(obj.Format != "vampire") { alert("Not a Kurumi 3 KVP patch!"); } else { var ptr = _myMalloc(data.length + 1); for(var i = 0; i < data.length; i++ ) { _setByte(ptr + i, data.charCodeAt(i)); } _setByte(ptr + data.length, 0); _ptrToString(ptr); _myFree(ptr); } } catch(err) { alert("Cannot load file : Wrong format or KVP corrupted!"); return; } file = []; }); reader.readAsText(file); } const a = document.createElement('input'); a.type = 'file'; a.addEventListener('change', function(event) { var file = event.target.files[0]; uploadFile(file); event.target.files[0] = []; }); a.style = 'display:none'; document.body.appendChild(a); a.click(); document.body.removeChild(a); },  
+ 586536: ($0) => { document.title = UTF8ToString($0) }
 };
 
 
@@ -7356,6 +7357,27 @@ var ASM_CONSTS = {
     }
 
 
+  var ALLOC_NORMAL = 0;
+  
+  var ALLOC_STACK = 1;
+  function allocate(slab, allocator) {
+      var ret;
+      assert(typeof allocator == 'number', 'allocate no longer takes a type argument')
+      assert(typeof slab != 'number', 'allocate no longer takes a number as arg0')
+  
+      if (allocator == ALLOC_STACK) {
+        ret = stackAlloc(slab.length);
+      } else {
+        ret = _malloc(slab.length);
+      }
+  
+      if (!slab.subarray && !slab.slice) {
+        slab = new Uint8Array(slab);
+      }
+      HEAPU8.set(slab, ret);
+      return ret;
+    }
+
   var FSNode = /** @constructor */ function(parent, name, mode, rdev) {
     if (!parent) {
       parent = this;  // root node sets parent to itself
@@ -7673,7 +7695,9 @@ var asmLibraryArg = {
   "invoke_iiiiii": invoke_iiiiii,
   "invoke_iiiiiii": invoke_iiiiiii,
   "invoke_iiiiiiii": invoke_iiiiiiii,
+  "invoke_ji": invoke_ji,
   "invoke_v": invoke_v,
+  "invoke_vf": invoke_vf,
   "invoke_vff": invoke_vff,
   "invoke_vi": invoke_vi,
   "invoke_vidd": invoke_vidd,
@@ -7693,7 +7717,7 @@ var asmLibraryArg = {
   "invoke_viiiiif": invoke_viiiiif,
   "invoke_viiiiii": invoke_viiiiii,
   "invoke_viiiiiifi": invoke_viiiiiifi,
-  "invoke_vjjj": invoke_vjjj,
+  "invoke_vij": invoke_vij,
   "llvm_eh_typeid_for": _llvm_eh_typeid_for
 };
 var asm = createWasm();
@@ -7719,6 +7743,9 @@ var _setClipboardText = Module["_setClipboardText"] = createExportWrapper("setCl
 var _getByte = Module["_getByte"] = createExportWrapper("getByte");
 
 /** @type {function(...*):?} */
+var _setByte = Module["_setByte"] = createExportWrapper("setByte");
+
+/** @type {function(...*):?} */
 var _saveWav = Module["_saveWav"] = createExportWrapper("saveWav");
 
 /** @type {function(...*):?} */
@@ -7741,6 +7768,18 @@ var _saveFMX = Module["_saveFMX"] = createExportWrapper("saveFMX");
 
 /** @type {function(...*):?} */
 var _alertJs = Module["_alertJs"] = createExportWrapper("alertJs");
+
+/** @type {function(...*):?} */
+var _myMalloc = Module["_myMalloc"] = createExportWrapper("myMalloc");
+
+/** @type {function(...*):?} */
+var _myFree = Module["_myFree"] = createExportWrapper("myFree");
+
+/** @type {function(...*):?} */
+var _ptrToString = Module["_ptrToString"] = createExportWrapper("ptrToString");
+
+/** @type {function(...*):?} */
+var _loadKvp = Module["_loadKvp"] = createExportWrapper("loadKvp");
 
 /** @type {function(...*):?} */
 var _main = Module["_main"] = createExportWrapper("main");
@@ -7798,7 +7837,10 @@ var ___cxa_can_catch = Module["___cxa_can_catch"] = createExportWrapper("__cxa_c
 var ___cxa_is_pointer_type = Module["___cxa_is_pointer_type"] = createExportWrapper("__cxa_is_pointer_type");
 
 /** @type {function(...*):?} */
-var dynCall_vjjj = Module["dynCall_vjjj"] = createExportWrapper("dynCall_vjjj");
+var dynCall_ji = Module["dynCall_ji"] = createExportWrapper("dynCall_ji");
+
+/** @type {function(...*):?} */
+var dynCall_vij = Module["dynCall_vij"] = createExportWrapper("dynCall_vij");
 
 /** @type {function(...*):?} */
 var dynCall_jiji = Module["dynCall_jiji"] = createExportWrapper("dynCall_jiji");
@@ -8024,6 +8066,17 @@ function invoke_vff(index,a1,a2) {
   }
 }
 
+function invoke_di(index,a1) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
 function invoke_viiiiii(index,a1,a2,a3,a4,a5,a6) {
   var sp = stackSave();
   try {
@@ -8079,28 +8132,6 @@ function invoke_vidd(index,a1,a2,a3) {
   }
 }
 
-function invoke_did(index,a1,a2) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_di(index,a1) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0) throw e;
-    _setThrew(1, 0);
-  }
-}
-
 function invoke_viddi(index,a1,a2,a3,a4) {
   var sp = stackSave();
   try {
@@ -8123,10 +8154,21 @@ function invoke_viidi(index,a1,a2,a3,a4) {
   }
 }
 
-function invoke_iiiiif(index,a1,a2,a3,a4,a5) {
+function invoke_did(index,a1,a2) {
   var sp = stackSave();
   try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4,a5);
+    return getWasmTableEntry(index)(a1,a2);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_vf(index,a1) {
+  var sp = stackSave();
+  try {
+    getWasmTableEntry(index)(a1);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0) throw e;
@@ -8138,6 +8180,17 @@ function invoke_iiiffii(index,a1,a2,a3,a4,a5,a6) {
   var sp = stackSave();
   try {
     return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiiif(index,a1,a2,a3,a4,a5) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3,a4,a5);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0) throw e;
@@ -8189,10 +8242,10 @@ function invoke_viiiiiifi(index,a1,a2,a3,a4,a5,a6,a7,a8) {
   }
 }
 
-function invoke_iiiiiiii(index,a1,a2,a3,a4,a5,a6,a7) {
+function invoke_viiiif(index,a1,a2,a3,a4,a5) {
   var sp = stackSave();
   try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7);
+    getWasmTableEntry(index)(a1,a2,a3,a4,a5);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0) throw e;
@@ -8200,10 +8253,10 @@ function invoke_iiiiiiii(index,a1,a2,a3,a4,a5,a6,a7) {
   }
 }
 
-function invoke_viiiif(index,a1,a2,a3,a4,a5) {
+function invoke_iiiiiiii(index,a1,a2,a3,a4,a5,a6,a7) {
   var sp = stackSave();
   try {
-    getWasmTableEntry(index)(a1,a2,a3,a4,a5);
+    return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0) throw e;
@@ -8222,10 +8275,21 @@ function invoke_didii(index,a1,a2,a3,a4) {
   }
 }
 
-function invoke_vjjj(index,a1,a2,a3,a4,a5,a6) {
+function invoke_ji(index,a1) {
   var sp = stackSave();
   try {
-    dynCall_vjjj(index,a1,a2,a3,a4,a5,a6);
+    return dynCall_ji(index,a1);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_vij(index,a1,a2,a3) {
+  var sp = stackSave();
+  try {
+    dynCall_vij(index,a1,a2,a3);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0) throw e;
@@ -8238,7 +8302,7 @@ function invoke_vjjj(index,a1,a2,a3,a4,a5,a6) {
 
 // === Auto-generated postamble setup entry stuff ===
 
-
+Module["allocate"] = allocate;
 var unexportedRuntimeSymbols = [
   'run',
   'UTF8ArrayToString',
@@ -8492,7 +8556,6 @@ var unexportedRuntimeSymbols = [
   'emscriptenWebGLGetIndexed',
   'ALLOC_NORMAL',
   'ALLOC_STACK',
-  'allocate',
   'IDBFS',
 ];
 unexportedRuntimeSymbols.forEach(unexportedRuntimeSymbol);
@@ -8619,9 +8682,6 @@ var missingLibrarySymbols = [
   'SDL_audio',
   'runAndAbortIfError',
   'emscriptenWebGLGetIndexed',
-  'ALLOC_NORMAL',
-  'ALLOC_STACK',
-  'allocate',
 ];
 missingLibrarySymbols.forEach(missingLibrarySymbol)
 
