@@ -1220,12 +1220,13 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  585156: ($0) => { navigator.clipboard.writeText(UTF8ToString($0)); },  
- 585207: ($0, $1, $2) => { const a = document.createElement('a'); a.style = 'display:none'; document.body.appendChild(a); var result = new Uint8Array($1); for(var i = 0; i < $1; i++) { result[i] = Module._getByte($0 + i); } var blob = new Blob([result], { type: 'application/octet-stream' }); const url = URL.createObjectURL(blob); a.href = url; const filename = UTF8ToString($2); a.download = filename; a.click(); URL.revokeObjectURL(url); document.body.removeChild(a); },  
- 585655: ($0) => { window.open(UTF8ToString($0)); },  
- 585688: ($0) => { alert(UTF8ToString($0)); },  
- 585715: () => { function uploadFile(file) { var reader = new FileReader(); reader.addEventListener("load", _=> { var data = reader.result; try { var obj = JSON.parse(data); if(obj.Format != "vampire") { alert("Not a Kurumi 3 KVP patch!"); } else { var ptr = _myMalloc(data.length + 1); for(var i = 0; i < data.length; i++ ) { _setByte(ptr + i, data.charCodeAt(i)); } _setByte(ptr + data.length, 0); _ptrToString(ptr); _myFree(ptr); } } catch(err) { alert("Cannot load file : Wrong format or KVP corrupted!"); return; } file = []; }); reader.readAsText(file); } const a = document.createElement('input'); a.type = 'file'; a.addEventListener('change', function(event) { var file = event.target.files[0]; uploadFile(file); event.target.files[0] = []; }); a.style = 'display:none'; document.body.appendChild(a); a.click(); document.body.removeChild(a); },  
- 586552: ($0) => { document.title = UTF8ToString($0) }
+  586132: ($0) => { navigator.clipboard.writeText(UTF8ToString($0)); },  
+ 586183: ($0, $1, $2) => { const a = document.createElement('a'); a.style = 'display:none'; document.body.appendChild(a); var result = new Uint8Array($1); for(var i = 0; i < $1; i++) { result[i] = Module._getByte($0 + i); } var blob = new Blob([result], { type: 'application/octet-stream' }); const url = URL.createObjectURL(blob); a.href = url; const filename = UTF8ToString($2); a.download = filename; a.click(); URL.revokeObjectURL(url); document.body.removeChild(a); },  
+ 586631: ($0, $1, $2) => { const a = document.createElement('a'); a.style = 'display:none'; document.body.appendChild(a); var result = new Uint8Array($1); for(var i = 0; i < $1; i++) { result[i] = Module._getByte($0 + i); } var blob = new Blob([result], { type: 'application/octet-stream' }); const url = URL.createObjectURL(blob); a.href = url; const filename = UTF8ToString($2); a.download = filename; a.click(); URL.revokeObjectURL(url); document.body.removeChild(a); },  
+ 587079: ($0) => { window.open(UTF8ToString($0)); },  
+ 587112: ($0) => { alert(UTF8ToString($0)); },  
+ 587139: () => { function uploadFile(file) { var reader = new FileReader(); reader.addEventListener("load", _=> { var data = reader.result; try { var obj = JSON.parse(data); if(obj.Format == "vampire") { var ptr = _myMalloc(data.length + 1); for(var i = 0; i < data.length; i++ ) { _setByte(ptr + i, data.charCodeAt(i)); } _setByte(ptr + data.length, 0); _ptrToString(ptr, 1); _myFree(ptr); } if(obj.Format == "krul") { var ptr = _myMalloc(data.length + 1); for(var i = 0; i < data.length; i++ ) { _setByte(ptr + i, data.charCodeAt(i)); } _setByte(ptr + data.length, 0); _ptrToString(ptr, 2); _myFree(ptr); } if(obj.Format != "vampire" && obj.Format != "krul") { alert("Cannot load file : Wrong format!") } } catch(err) { alert("Cannot load file : Wrong format or KVP corrupted!"); return; } file = []; }); reader.readAsText(file); } const a = document.createElement('input'); a.type = 'file'; a.addEventListener('change', function(event) { var file = event.target.files[0]; uploadFile(file); event.target.files[0] = []; }); a.style = 'display:none'; document.body.appendChild(a); a.click(); document.body.removeChild(a); },  
+ 588248: ($0) => { document.title = UTF8ToString($0) }
 };
 
 
@@ -7700,16 +7701,15 @@ var asmLibraryArg = {
   "invoke_vf": invoke_vf,
   "invoke_vff": invoke_vff,
   "invoke_vi": invoke_vi,
+  "invoke_vid": invoke_vid,
   "invoke_vidd": invoke_vidd,
   "invoke_viddi": invoke_viddi,
   "invoke_vif": invoke_vif,
   "invoke_vii": invoke_vii,
   "invoke_viidi": invoke_viidi,
   "invoke_viif": invoke_viif,
-  "invoke_viiffiiii": invoke_viiffiiii,
   "invoke_viii": invoke_viii,
   "invoke_viiiffff": invoke_viiiffff,
-  "invoke_viiifffffffff": invoke_viiifffffffff,
   "invoke_viiii": invoke_viiii,
   "invoke_viiiif": invoke_viiiif,
   "invoke_viiiifi": invoke_viiiifi,
@@ -7956,17 +7956,6 @@ function invoke_viii(index,a1,a2,a3) {
   }
 }
 
-function invoke_viiffiiii(index,a1,a2,a3,a4,a5,a6,a7,a8) {
-  var sp = stackSave();
-  try {
-    getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7,a8);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0) throw e;
-    _setThrew(1, 0);
-  }
-}
-
 function invoke_viiiffff(index,a1,a2,a3,a4,a5,a6,a7) {
   var sp = stackSave();
   try {
@@ -7978,32 +7967,10 @@ function invoke_viiiffff(index,a1,a2,a3,a4,a5,a6,a7) {
   }
 }
 
-function invoke_viiifffffffff(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12) {
-  var sp = stackSave();
-  try {
-    getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0) throw e;
-    _setThrew(1, 0);
-  }
-}
-
 function invoke_iiiiii(index,a1,a2,a3,a4,a5) {
   var sp = stackSave();
   try {
     return getWasmTableEntry(index)(a1,a2,a3,a4,a5);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_viiiii(index,a1,a2,a3,a4,a5) {
-  var sp = stackSave();
-  try {
-    getWasmTableEntry(index)(a1,a2,a3,a4,a5);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0) throw e;
@@ -8066,10 +8033,32 @@ function invoke_vff(index,a1,a2) {
   }
 }
 
+function invoke_viiiii(index,a1,a2,a3,a4,a5) {
+  var sp = stackSave();
+  try {
+    getWasmTableEntry(index)(a1,a2,a3,a4,a5);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
 function invoke_di(index,a1) {
   var sp = stackSave();
   try {
     return getWasmTableEntry(index)(a1);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_vid(index,a1,a2) {
+  var sp = stackSave();
+  try {
+    getWasmTableEntry(index)(a1,a2);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0) throw e;
