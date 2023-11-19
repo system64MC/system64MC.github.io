@@ -44,7 +44,7 @@
     </style>
   </head>
   <body>
-    <canvas class="game" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+    <canvas class="game" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
     <script type='text/javascript'>
       var Module = {
         preRun: [],
@@ -67,6 +67,25 @@
         setStatus: function(text) { },
         monitorRunDependencies: function(left) { },
       };
+
+      function setWinSize() {
+          Module._mySetWindowSize(window.innerWidth, window.innerHeight);
+      }
+
+      // window.addEventListener("resize", setWinSize);
+      window.onresize = function(event) {
+        setWinSize();
+      }
+      // window.onkeypress = function(event) {
+      //   var code = event.keyCode || event.which;
+      //   if(code == 122){
+      //     preventDefault();
+      //     Module._mySetWindowSize(visualViewport.width, visualViewport.height);
+      //     // Module.requestFullscreen(true, true);
+      //   }
+      // }
+      // Module.requestFullscreen(true, true);
+      window.addEventListener
       window.onerror = function() {
         console.log("onerror: " + event.message);
       };

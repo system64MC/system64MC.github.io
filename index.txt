@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple HTML Page</title>
+</head>
+<body>
+
+    <h1>Hello, World!</h1>
+
+    <button onclick="openKurumi()">Kurumi</button>
+
+    <script>
+        function openKurumi() {
+            window.open("https://system64mc.github.io/kurumi/", "_blank", "toolbar=no,scrollbars=no,resizable=yes,top=0,left=0,width=1280,height=800");
+        }
+    </script>
+
+</body>
+</html>
