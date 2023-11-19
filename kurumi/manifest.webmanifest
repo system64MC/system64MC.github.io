@@ -6,8 +6,8 @@
   "description": "Kurumi Wavetable Workstation app",
  
   // Scope and start URL - these need to change to yours
-  "scope": "/",
-  "start_url": "/",
+  "scope": "/kurumi/",
+  "start_url": "/kurumi/",
  
   // colours of the app as displayed in the installer
   "background_color": "#ffffff",
