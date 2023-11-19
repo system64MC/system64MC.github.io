@@ -1,0 +1,30 @@
+{
+  // Name of the app and short name in case there isn't enough space
+  "name": "Kurumi PWA",
+  "short_name": "KURWA",
+  // Description what your app is
+  "description": "Kurumi Wavetable Workstation app",
+ 
+  // Scope and start URL - these need to change to yours
+  "scope": "/kurumi/",
+  "start_url": "/kurumi/",
+ 
+  // colours of the app as displayed in the installer
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+ 
+  // Display of the app. 
+  //This could be "standalone", "fullscreen", "minimal-ui" or "browser"
+  "display": "standalone", 
+ 
+  // The possible icons to display. Make sure to change the src URL,
+  // the type and the size to your needs. If the size isn't correct, 
+  // you may not be able to install the app. 
+  "icons": [
+      {
+        "src": "/kurumi/favicon.jpeg",
+        "type": "image/jpeg",
+        "sizes": "128x128"
+      }
+  ]
+}
